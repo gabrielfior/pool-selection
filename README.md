@@ -8,6 +8,7 @@ For purchasing LP tokens:
 - Press Buy
 
 For visualizing the leaderboard:
+- Either click on the button "Leaderboard" on the previous page or
 - Navigate to https://pool-selection.herokuapp.com/user-holdings/email/<email-you-previously-entered>/leaderboard
   - If a non-existent e-mail is provided as path parameter above, the endpoint still works but without any highlighting.
 
