@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <style>
+        /* From https://www.w3schools.com/howto/howto_js_snackbar.asp */
+      #addedUserHoldingMessage, #errorMessage {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: green; /* Black background color */
+  color: #fff; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 2px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  bottom: 30px; /* 30px from the bottom */
+}
+#errorMessage{
+    background-color: red;
+}
+
+#addedUserHoldingMessage.show, #errorMessage.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+}
+    </style>
+    <meta charset='utf-8' />
+    <title>App</title>
+  </head>
+  <body>
+
+    <h1>Select one of the pools to invest $100,000, then click <bold>buy</bold></h1>
+
+    <p>E-mail:</p>
+    <input type='email' id='email_address' value='john@example.com' />
+    <p>Pool:</p>
+    <input type='text' id='pool_address' value='' />
+    <div style="margin-top: 10px">
+    <button id='submit'>Buy</button>
+    </div>
+
+
+<div id="addedUserHoldingMessage"></div>
+<div id="errorMessage"></div>
+
+<table style="border-color: black; border-collapse: collapse; margin-top: 20px">
+  <tr>
+    <th>Name</th>
+    <th>Pool Address</th>
+    <th>LP Token price (USD)</th>
+  </tr>
+   {{#each pools}}
+      <tr>
+          <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.pool_address}}</td>
+            <td>{{this.avg_lp_price}}</td>
+           </tr>
+      {{/each}}
+</table>
+
+    <script>
+      document.getElementById("submit").addEventListener("click", storeData);
+
+    function displayToast(email) {
+        var x = document.getElementById("addedUserHoldingMessage");
+        x.className = "show";
+        x.textContent = `Stored e-mail address ${email}`;
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+
+    function displayErrorToast(errorMsg){
+        var x = document.getElementById("errorMessage");
+        x.className = "show";
+        x.textContent = `Error: ${errorMsg}`;
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+    
+
+      function storeData() { 
+        const poolAddress = document.getElementById("pool_address").value; 
+        const emailAddress = document.getElementById("email_address").value; 
+        let data = new URLSearchParams();
+        const newId = 0;
+        data.append("email", emailAddress); 
+        data.append("pool_address",poolAddress); 
+        fetch(`/user-holdings`, { method: "post", body: data })
+        .then((res) => {
+            if (res.ok){
+                return res.json();
+            }
+            throw new Error('Something went wrong');
+            })
+        .then((userHolding) => {
+            displayToast(userHolding.email);
+            })
+        .catch((err) => { 
+            displayErrorToast(`Pool ${poolAddress} does not exist`);
+            console.error(err);
+        }); 
+    }
+    </script>
+
+  </body>
+</html>

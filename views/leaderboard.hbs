@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Leaderboard</title>
+  </head>
+  <body>
+
+    <h1>Leaderboard</h1>
+
+<table style="border-color: black; border-collapse: collapse;">
+  <tr>
+    <th>Email</th>
+    <th>Holding</th>
+  </tr>
+   {{#each user_holdings}}
+      <tr style="background-color: yellow;">
+        {{#if this.isMainUser}}
+           <td>{{this.email}}</td>
+            <td>{{this.userHoldingUSD}}</td>
+        </tr>
+        {{else}}
+          <tr>
+            <td>{{this.email}}</td>
+            <td>{{this.userHoldingUSD}}</td>            
+           </tr>
+            {{/if}}
+      {{/each}}
+</table>
+
+   
+  </body>
+</html>
