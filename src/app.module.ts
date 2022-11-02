@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -32,6 +31,6 @@ import { HttpModule } from '@nestjs/axios';
     UserHoldingsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ApyVisionService],
+  providers: [ApyVisionService],
 })
 export class AppModule {}

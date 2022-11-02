@@ -6,11 +6,6 @@ import { UserHoldingDTO } from './dtos';
 export class UserHoldingsController {
   constructor(private readonly userHoldingsService: UserHoldingsService) {}
 
-  @Get()
-  getUsers() {
-    return this.userHoldingsService.getUserHoldings();
-  }
-
   @Get('/email/:email/leaderboard')
   @Render('leaderboard')
   async getLeaderboard(@Param() params) {
@@ -20,9 +15,7 @@ export class UserHoldingsController {
 
   @Post()
   async addUser(@Body() userHoldingDTO: UserHoldingDTO) {
-
     const addedUserHolding = await this.userHoldingsService.addUserHolding(userHoldingDTO);
-    console.log('added user', addedUserHolding);
     return addedUserHolding;
   }
 }

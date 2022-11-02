@@ -15,7 +15,6 @@ export class UserHoldingsService {
 
   async buildLeaderboard(email: string): Promise<UserHoldingUSDDTO[]> {
     const pools = await this.apyVisionService.getApyPools();
-
     const usersUSDHoldings = await this.userHoldingsRepository.find();
     const usdHoldingsDTOs: UserHoldingUSDDTO[] = [];
     for (const user of usersUSDHoldings) {
@@ -27,10 +26,7 @@ export class UserHoldingsService {
     return usdHoldingsDTOs;
   }
 
-  getUserHoldings(): Promise<UserHolding[]> {
-    return this.userHoldingsRepository.find();
-  }
-
+  // ToDo - Define interface for pools (auto-generate?)
   findPoolByAddress(poolAddress: string, pools: any[]): any {
     for (const pool of pools) {
       if (pool.pool_address == poolAddress) {

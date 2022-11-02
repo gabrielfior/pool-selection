@@ -12,18 +12,23 @@
     <th>Email</th>
     <th>Holding</th>
   </tr>
+  <!-- Using two loops for rendering first the user holdings, then holdings of other users -->
    {{#each user_holdings}}
       <tr style="background-color: yellow;">
         {{#if this.isMainUser}}
            <td>{{this.email}}</td>
             <td>{{this.userHoldingUSD}}</td>
         </tr>
-        {{else}}
+            {{/if}}
+      {{/each}}
+      {{#each user_holdings}}
+      <tr style="background-color: yellow;">
+        {{#unless this.isMainUser}}
           <tr>
             <td>{{this.email}}</td>
             <td>{{this.userHoldingUSD}}</td>            
            </tr>
-            {{/if}}
+            {{/unless}}
       {{/each}}
 </table>
 
